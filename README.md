@@ -1,5 +1,7 @@
 # ApiRxWrapper
 
+My http api caller which base on Retrofit2, OkHttp3, RxJava2 and Gson
+
 # Proguard
 
 ```
