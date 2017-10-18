@@ -2,11 +2,11 @@
 
 My http api caller which base on [Retrofit2](https://github.com/square/retrofit), [OkHttp3](https://github.com/square/okhttp), [RxJava2](https://github.com/ReactiveX/RxJava) and [Gson](https://github.com/google/gson)
 
-# Install
+## Install
 
 Download and import as Android Studio Module
 
-# Usage
+## Usage
 
 Create HTTP API interface that same as Retrofit format
 
@@ -43,7 +43,7 @@ Reference:
 - http://square.github.io/retrofit/#introduction
 - http://square.github.io/retrofit/#api-declaration
 
-# Proguard
+## Proguard
 
 ```
 
@@ -88,7 +88,7 @@ Reference:
 ##---------------End: proguard configuration for okhttp3  ----------
 ```
 
-# License
+## License
 
 ```
 MIT License
