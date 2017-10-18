@@ -27,7 +27,7 @@ android {
 dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.google.code.gson:gson:2.8.2'
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
