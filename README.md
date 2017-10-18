@@ -2,6 +2,47 @@
 
 My http api caller which base on [Retrofit2](https://github.com/square/retrofit), [OkHttp3](https://github.com/square/okhttp), [RxJava2](https://github.com/ReactiveX/RxJava) and [Gson](https://github.com/google/gson)
 
+# Install
+
+Download and import as Android Studio Module
+
+# Usage
+
+Create HTTP API interface that same as Retrofit format
+
+```
+public interface GitHubService {
+  @GET("users/{user}/repos")
+  Call<List<Repo>> listRepos(@Path("user") String user);
+}
+```
+
+The ApiRxWrapper class use Retrofit to generates an implementation of the GitHubService interface.
+
+```
+ApiRxWrapper apiRxWrapper = new ApiRxWrapper.Builder(this)
+                .setBaseUrl("https://api.github.com/")
+                .build();
+
+GitHubService service = apiRxWrapper.getApiService(GitHubService.class);
+```
+
+Convert Call to the Rx Instance and subscribe it
+
+```
+Call<List<Repo>> repos = service.listRepos("octocat");
+
+apiRxWrapper.executeAsSingle(repos)
+                .subscribeOn(apiRxWrapper.getNetworkScheduler())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+```
+
+Reference:
+
+- http://square.github.io/retrofit/#introduction
+- http://square.github.io/retrofit/#api-declaration
+
 # Proguard
 
 ```
