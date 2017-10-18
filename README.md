@@ -24,7 +24,7 @@ ApiRxWrapper apiRxWrapper = new ApiRxWrapper.Builder(this)
                 .setBaseUrl("https://api.github.com/")
                 .build();
 
-GitHubService service = apiRxWrapper.getApiService(GitHubService.class);
+GitHubService service = apiRxWrapper.createApiService(GitHubService.class);
 ```
 
 Convert Call to the Rx Instance and subscribe it

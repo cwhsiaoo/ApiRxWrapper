@@ -60,7 +60,7 @@ public class ApiRxWrapper {
                 .build();
     }
 
-    public <T> T getApiService(final Class<T> service) {
+    public <T> T createApiService(final Class<T> service) {
         return retrofitInstance.create(service);
     }
 
