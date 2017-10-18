@@ -29,6 +29,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -119,23 +120,52 @@ public class ApiRxWrapper {
     public static class Builder {
         private Context context;
         private String baseUrl;
-        private Gson gson;
+        private Gson gson = null;
+        private OkHttpClient okHttpClient = null;
         private List<Interceptor> customInterceptorList = null;
 
         public Builder(Context context) {
             this.context = context.getApplicationContext();
         }
 
-        public Builder setBaseUrl(String baseUrl) {
+        /**
+         * @param baseUrl for {@link Retrofit.Builder#baseUrl(String)}
+         * @return
+         */
+        public Builder setBaseUrl(@NonNull String baseUrl) {
             this.baseUrl = baseUrl;
             return this;
         }
 
+        /**
+         * @param gson null for use default {@link Gson}
+         * @return
+         * @see Retrofit.Builder#addConverterFactory(Converter.Factory)
+         * @see GsonConverterFactory#create(Gson)
+         */
         public Builder setGson(Gson gson) {
             this.gson = gson;
             return this;
         }
 
+        /**
+         * @param okHttpClient null for use default {@link OkHttpClient}
+         * @return
+         * @see #addCustomInterceptor(Interceptor)
+         * @see Retrofit.Builder#client(OkHttpClient)
+         */
+        public Builder setOkHttpClient(OkHttpClient okHttpClient) {
+            this.okHttpClient = okHttpClient;
+            return this;
+        }
+
+        /**
+         * Add {@link Interceptor} on the default {@link OkHttpClient.Builder}. Do nothing when set the non-default OkHttpClient
+         *
+         * @param interceptor for {@link OkHttpClient.Builder#addInterceptor(Interceptor)}
+         * @return
+         * @see #setOkHttpClient(OkHttpClient)
+         */
         public Builder addCustomInterceptor(Interceptor interceptor) {
             if (customInterceptorList == null) {
                 customInterceptorList = new ArrayList<>();
@@ -147,7 +177,7 @@ public class ApiRxWrapper {
         }
 
         @NonNull
-        private OkHttpClient generateOkHttpClient() {
+        private OkHttpClient generateDefaultOkHttpClient() {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.connectTimeout(30, TimeUnit.SECONDS);
 
@@ -180,12 +210,19 @@ public class ApiRxWrapper {
             return builder.build();
         }
 
+        /**
+         * Create the {@link ApiRxWrapper} instance using the configured values.
+         *
+         * @return
+         */
         public ApiRxWrapper build() {
-            OkHttpClient client = generateOkHttpClient();
+            if (okHttpClient == null) {
+                okHttpClient = generateDefaultOkHttpClient();
+            }
             if (gson == null) {
                 gson = new Gson();
             }
-            return new ApiRxWrapper(gson, client, baseUrl);
+            return new ApiRxWrapper(gson, okHttpClient, baseUrl);
         }
     }
 }
