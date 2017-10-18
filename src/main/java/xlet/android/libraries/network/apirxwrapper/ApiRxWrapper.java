@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -63,20 +64,24 @@ public class ApiRxWrapper {
         return retrofitInstance.create(service);
     }
 
-    public <T> Observable<T> getObservableResponse(Call<T> call) {
-        return new CallObservable<>(call);
+    public <T> Observable<T> executeAsObservable(Call<T> call) {
+        return new ExecuteCallObservable<>(call);
     }
 
-    public <T> Single<T> getSingleResponse(Call<T> call) {
-        return getObservableResponse(call).singleOrError();
+    public <T> Completable executeAsCompletable(Call<T> call) {
+        return executeAsObservable(call).ignoreElements();
     }
 
-    public <T> Maybe<T> getMaybeResponse(Call<T> call) {
-        return getObservableResponse(call).singleElement();
+    public <T> Single<T> executeAsSingle(Call<T> call) {
+        return executeAsObservable(call).singleOrError();
     }
 
-    public <T> Flowable<T> getFlowableResponse(Call<T> call) {
-        return getObservableResponse(call).toFlowable(BackpressureStrategy.LATEST);
+    public <T> Maybe<T> executeAsMaybe(Call<T> call) {
+        return executeAsObservable(call).singleElement();
+    }
+
+    public <T> Flowable<T> executeAsFlowable(Call<T> call) {
+        return executeAsObservable(call).toFlowable(BackpressureStrategy.LATEST);
     }
 
     /**

@@ -11,13 +11,16 @@ import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
+ * Synchronously send the request by {@link Call#execute()} and return its response
+ *
+ * @see Call
  * @see retrofit2.adapter.rxjava2.CallExecuteObservable
  * @see retrofit2.adapter.rxjava2.BodyObservable
  */
-final class CallObservable<T> extends Observable<T> {
+final class ExecuteCallObservable<T> extends Observable<T> {
     private final Call<T> originalCall;
 
-    CallObservable(Call<T> originalCall) {
+    ExecuteCallObservable(Call<T> originalCall) {
         this.originalCall = originalCall;
     }
 
