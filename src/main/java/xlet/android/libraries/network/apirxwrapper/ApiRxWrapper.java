@@ -20,7 +20,6 @@ import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -112,10 +111,6 @@ public class ApiRxWrapper {
     //public Scheduler getParallelScheduler() {
     //    return parallelScheduler;
     //}
-
-    public Scheduler getMainScheduler() {
-        return AndroidSchedulers.mainThread();
-    }
 
     public static class Builder {
         private Context context;
